@@ -1,12 +1,23 @@
-﻿<Window x:Class="Labs_WPF.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Labs_WPF"
+        x:Class="Labs_WPF.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Численные методы" 
+        Height="450" Width="800"
+        MinHeight="450" MinWidth="800">
     <Grid>
-        
+        <UniformGrid Rows="4" Columns="2">
+            <Button x:Name="dichotomyMethodBtn" Content="1. Метод Дихотомии" FontSize="20" Margin="10, 10, 5, 5"/>
+            <Button x:Name="goldenRatioMethodBtn" Content="2. Метод Золотого Сечения" FontSize="20" Margin="5, 10, 10, 5"/>
+            <Button x:Name="newtonMethodBtn" Content="3. Метод Ньютона" FontSize="20" Margin="10, 5, 5, 5"/>
+            <Button x:Name="btn4"  Content="4" FontSize="20" Margin="5, 5, 10, 5"/>
+            <Button x:Name="btn5" Content="5" FontSize="20" Margin="10, 5, 5, 5"/>
+            <Button x:Name="btn6" Content="6" FontSize="20" Margin="5, 5, 10, 5"/>
+            <Button x:Name="btn7" Content="7" FontSize="20" Margin="10, 5, 5, 10"/>
+            <Button x:Name="btn8" Content="8" FontSize="20" Margin="5, 5, 10, 10"/>
+        </UniformGrid>
     </Grid>
 </Window>
