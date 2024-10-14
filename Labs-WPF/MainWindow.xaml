@@ -10,7 +10,7 @@
         MinHeight="450" MinWidth="800">
     <Grid>
         <UniformGrid Rows="4" Columns="2">
-            <Button x:Name="dichotomyMethodBtn" Content="1. Метод Дихотомии" FontSize="20" Margin="10, 10, 5, 5"/>
+            <Button x:Name="dichotomyMethodBtn" Content="1. Метод Дихотомии" FontSize="20" Margin="10, 10, 5, 5" Click="dichotomyMethodBtn_Click"/>
             <Button x:Name="goldenRatioMethodBtn" Content="2. Метод Золотого Сечения" FontSize="20" Margin="5, 10, 10, 5"/>
             <Button x:Name="newtonMethodBtn" Content="3. Метод Ньютона" FontSize="20" Margin="10, 5, 5, 5"/>
             <Button x:Name="btn4"  Content="4" FontSize="20" Margin="5, 5, 10, 5"/>

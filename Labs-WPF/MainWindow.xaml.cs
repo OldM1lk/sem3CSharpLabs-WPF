@@ -11,5 +11,11 @@ namespace Labs_WPF
         {
             InitializeComponent();
         }
+
+        private void dichotomyMethodBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DichotomyWindow dichotomyWindow = new DichotomyWindow();
+            dichotomyWindow.Show();
+        }
     }
 }
