@@ -17,5 +17,11 @@ namespace Labs_WPF
             DichotomyWindow dichotomyWindow = new DichotomyWindow();
             dichotomyWindow.Show();
         }
+
+        private void goldenRatioMethodBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GoldenRatioWindow goldenRatioWindow = new GoldenRatioWindow();
+            goldenRatioWindow.Show();
+        }
     }
 }
