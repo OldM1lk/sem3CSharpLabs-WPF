@@ -79,6 +79,11 @@ namespace Labs_WPF
             }
         }
 
+        private void functionTB_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            isGraphPlotted = false;
+        }
+
         private double SolveFunction(Function function, string x)
         {
             return new Expression($"f({x})", function).calculate();
@@ -101,7 +106,18 @@ namespace Labs_WPF
 
         private void PlotGraph()
         {
+            int left = Convert.ToInt32(tbA.Text);
+            int right = Convert.ToInt32(tbB.Text);
             List<DataPoint> dot = new List<DataPoint>();
+
+            if (left < 5 && left > -5)
+            {
+                left = -5;
+            }
+            if (right < 5 && right > -5)
+            {
+                right = 5;
+            }
 
             var plotModel = new PlotModel { Title = "График функции" };
 
@@ -112,8 +128,8 @@ namespace Labs_WPF
                 StrokeThickness = 2
             };
 
-            absicc.Points.Add(new DataPoint(-100, 0));
-            absicc.Points.Add(new DataPoint(100, 0));
+            absicc.Points.Add(new DataPoint(left, 0));
+            absicc.Points.Add(new DataPoint(right, 0));
 
             var ordinate = new LineSeries
             {
@@ -122,8 +138,8 @@ namespace Labs_WPF
                 StrokeThickness = 2,
             };
 
-            ordinate.Points.Add(new DataPoint(0, 100));
-            ordinate.Points.Add(new DataPoint(0, -100));
+            ordinate.Points.Add(new DataPoint(0, right));
+            ordinate.Points.Add(new DataPoint(0, left));
 
             var lineSeries = new LineSeries
             {
@@ -133,7 +149,7 @@ namespace Labs_WPF
 
             function = new Function("f(x) = " + functionTB.Text);
 
-            for (int pointIndex = -200; pointIndex <= 200; ++pointIndex)
+            for (int pointIndex = left; pointIndex <= right; ++pointIndex)
             {
                 expression = new Expression($"f({pointIndex})", function);
                 double y = expression.calculate();
@@ -212,6 +228,6 @@ namespace Labs_WPF
             }
 
             return result;
-        }        
+        }
     }
 }

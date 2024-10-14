@@ -2,24 +2,27 @@
 using System.Windows;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using org.mariuszgromada.math.mxparser;
+using Window = System.Windows.Window;
 using Expression = org.mariuszgromada.math.mxparser.Expression;
+using Function = org.mariuszgromada.math.mxparser.Function;
 using OxyPlot.Series;
 using OxyPlot;
+using MathNet.Symbolics;
 
 namespace Labs_WPF
 {
     /// <summary>
-    /// Логика взаимодействия для GoldenRatioWindow.xaml
+    /// Логика взаимодействия для DichotomyWindow.xaml
     /// </summary>
-    public partial class GoldenRatioWindow : Window
+    public partial class NewtonWindow : Window
     {
         private Expression expression;
         private Function function;
         private int precision;
         private bool isGraphPlotted = false;
+        private int maxIterations = 100;
 
-        public GoldenRatioWindow()
+        public NewtonWindow()
         {
             InitializeComponent();
         }
@@ -38,8 +41,8 @@ namespace Labs_WPF
 
             if (IsTextValid())
             {
-                var output = GoldenRatioMethod(function, leftRestriction(), rightRestriction(), epsilon());
-                ShowResult(output);
+                var output = NewtonMethod(function, leftRestriction(), rightRestriction(), epsilon());
+                ShowResult(output.Item1, output.Item2);
             }
         }
 
@@ -89,13 +92,19 @@ namespace Labs_WPF
             return new Expression($"f({x})", function).calculate();
         }
 
-        private void ShowResult(double result)
+        private void ShowResult(double result, bool error)
         {
-            double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
-            resultValue = Math.Round(resultValue, precision);
-            resultValue = Math.Abs(resultValue);
-            result = Math.Round(result, precision);
-            MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (!error)
+            {
+                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
+                resultValue = Math.Round(resultValue, precision);
+                result = Math.Round(result, precision);
+                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("В заданном интревале отсутствует корень", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void PlotGraph()
@@ -159,50 +168,38 @@ namespace Labs_WPF
             isGraphPlotted = true;
         }
 
-        public double GoldenRatioMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        public static string FindDerivative(string function)
         {
-            if (maxBtn.IsChecked == true)
+            var expression = SymbolicExpression.Parse(function);
+            var x = SymbolicExpression.Variable("x");
+            var derivative = expression.Differentiate(x);
+
+            return derivative.ToString();
+        }
+
+        private (double, bool) NewtonMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        {
+            bool error = false;
+
+            if (SolveFunction(function, leftRestriction.ToString()) * SolveFunction(function, rightRestriction.ToString()) > 0)
             {
-                function = new Function("f(x) = " + "-(" + functionTB.Text + ")");
+                error = true;
+                return (0, error);
             }
 
-            double result = double.NaN;
+            Function derivativeFunction = new Function("f(x) = " + FindDerivative(functionTB.Text));
+            double x1 = rightRestriction;
+            double x2 = leftRestriction;
+            int iterationsCount = 0;
 
-            double leftValue = SolveFunction(function, leftRestriction.ToString().Replace(",", "."));
-            double rightValue = SolveFunction(function, rightRestriction.ToString().Replace(",", "."));
-
-            double d = (Math.Sqrt(5) - 1) / 2;
-
-            double xFirst = rightRestriction - d * (rightRestriction - leftRestriction);
-            double xSecond = leftRestriction + d * (rightRestriction - leftRestriction);
-
-            double firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
-            double secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
-
-
-            while (Math.Abs(rightRestriction - leftRestriction) > epsilon)
+            while (Math.Abs(x2 - x1) > epsilon && iterationsCount < maxIterations)
             {
-                if (firstResult < secondResult)
-                {
-                    rightRestriction = xSecond;
-                    xSecond = xFirst;
-                    xFirst = rightRestriction - d * (rightRestriction - leftRestriction);
-                    firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
-                    secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
-                }
-                else
-                {
-                    leftRestriction = xFirst;
-                    xFirst = xSecond;
-                    xSecond = leftRestriction + d * (rightRestriction - leftRestriction);
-                    firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
-                    secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
-                }
+                x1 = x2;
+                x2 = x1 - SolveFunction(function, x1.ToString().Replace(",", ".")) / SolveFunction(derivativeFunction, x1.ToString().Replace(",", "."));
+                ++iterationsCount;
             }
 
-            result = (leftRestriction + rightRestriction) / 2;
-
-            return result;
+            return (x2, error);
         }
 
         private bool IsTextValid()

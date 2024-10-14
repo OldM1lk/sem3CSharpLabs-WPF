@@ -23,5 +23,11 @@ namespace Labs_WPF
             GoldenRatioWindow goldenRatioWindow = new GoldenRatioWindow();
             goldenRatioWindow.Show();
         }
+
+        private void newtonMethodBtn_Click(object sender, RoutedEventArgs e)
+        {
+            NewtonWindow newtonWindow = new NewtonWindow();
+            newtonWindow.Show();
+        }
     }
 }

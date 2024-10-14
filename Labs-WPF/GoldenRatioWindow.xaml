@@ -21,7 +21,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="f(x) = " FontSize="20" VerticalAlignment="Center"/>
-                    <TextBox x:Name="functionTB" Text="x" FontSize="20" Margin="5,0,10,0" Width="284"/>
+                    <TextBox x:Name="functionTB" Text="x" FontSize="20" Margin="5,0,10,0" Width="284" TextChanged="functionTB_TextChanged"/>
                     <Button x:Name="plotBtn" Content="Построить" FontSize="20" Width="106" Click="plotBtn_Click"/>
                 </StackPanel>
 
