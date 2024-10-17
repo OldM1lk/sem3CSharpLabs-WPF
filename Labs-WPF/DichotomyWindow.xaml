@@ -30,12 +30,12 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,5">
                         <TextBlock Text="a (левый край) =" FontSize="20" VerticalAlignment="Center"/>
-                        <TextBox x:Name="tbA" Text="-100" FontSize="20" Margin="5,0" Width="297"/>
+                        <TextBox x:Name="tbA" Text="-100" FontSize="20" Margin="5,0" Width="297" TextChanged="functionTB_TextChanged"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,5">
                         <TextBlock Text="b (правый край) =" FontSize="20" VerticalAlignment="Center"/>
-                        <TextBox x:Name="tbB" Text="100" FontSize="20" Margin="5,0" Width="283"/>
+                        <TextBox x:Name="tbB" Text="100" FontSize="20" Margin="5,0" Width="283" TextChanged="functionTB_TextChanged"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,5">
@@ -51,7 +51,6 @@
 
         <Viewbox Grid.Column="1" Margin="0,0,0,0">
             <oxy:PlotView x:Name="graph" FontSize="20" Width="550" Height="500"/>
-
         </Viewbox>
     </Grid>
 </Window>

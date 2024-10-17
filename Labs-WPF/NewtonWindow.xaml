@@ -30,12 +30,12 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="0,5">
                         <TextBlock Text="a (левый край) =" FontSize="20" VerticalAlignment="Center"/>
-                        <TextBox x:Name="tbA" Text="-100" FontSize="20" Margin="5,0" Width="297"/>
+                        <TextBox x:Name="tbA" Text="-100" FontSize="20" Margin="5,0" Width="297" TextChanged="functionTB_TextChanged"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,5">
                         <TextBlock Text="b (правый край) =" FontSize="20" VerticalAlignment="Center"/>
-                        <TextBox x:Name="tbB" Text="100" FontSize="20" Margin="5,0" Width="283"/>
+                        <TextBox x:Name="tbB" Text="100" FontSize="20" Margin="5,0" Width="283" TextChanged="functionTB_TextChanged"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,5">
@@ -46,12 +46,19 @@
 
                 <Button x:Name="calculateBtn" Content="Рассчитать методом Ньютона" FontSize="20" Margin="0,20,0,0" HorizontalAlignment="Center" Width="458" Click="calculateBtn_Click"/>
 
+                <GroupBox Header="Zero / Min / Max" Margin="0,20,0,0" FontSize="20">
+                    <StackPanel>
+                        <RadioButton x:Name="zeroBtn" Content="f(x) = 0" FontSize="20" IsChecked="True"/>
+                        <RadioButton x:Name="minBtn" Content="Min" FontSize="20"/>
+                        <RadioButton x:Name="maxBtn" Content="Max" FontSize="20"/>
+                    </StackPanel>
+                </GroupBox>
+
             </StackPanel>
         </Viewbox>
 
         <Viewbox Grid.Column="1" Margin="0,0,0,0">
             <oxy:PlotView x:Name="graph" FontSize="20" Width="550" Height="500"/>
-
         </Viewbox>
     </Grid>
 </Window>

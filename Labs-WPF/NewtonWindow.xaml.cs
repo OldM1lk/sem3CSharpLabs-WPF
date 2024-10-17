@@ -181,25 +181,52 @@ namespace Labs_WPF
         {
             bool error = false;
 
-            if (SolveFunction(function, leftRestriction.ToString()) * SolveFunction(function, rightRestriction.ToString()) > 0)
+            if (zeroBtn.IsChecked == true && SolveFunction(function, leftRestriction.ToString().Replace(",", ".")) * SolveFunction(function, rightRestriction.ToString().Replace(",", ".")) > 0)
             {
-                error = true;
-                return (0, error);
+                return (0, error = true);
             }
 
-            Function derivativeFunction = new Function("f(x) = " + FindDerivative(functionTB.Text));
+            string firstDerivative;
+
+            if (maxBtn.IsChecked == true)
+            {
+                firstDerivative = FindDerivative("-(" + functionTB.Text + ")");
+            }
+            else
+            {
+                firstDerivative = FindDerivative(functionTB.Text);
+            }
+            
+            Function firstDerivativeFunction = new Function("f(x) = " + firstDerivative);
             double x1 = rightRestriction;
             double x2 = leftRestriction;
             int iterationsCount = 0;
 
-            while (Math.Abs(x2 - x1) > epsilon && iterationsCount < maxIterations)
+            if (zeroBtn.IsChecked == true)
             {
-                x1 = x2;
-                x2 = x1 - SolveFunction(function, x1.ToString().Replace(",", ".")) / SolveFunction(derivativeFunction, x1.ToString().Replace(",", "."));
-                ++iterationsCount;
-            }
+                while (Math.Abs(x2 - x1) > epsilon && iterationsCount < maxIterations)
+                {
+                    x1 = x2;
+                    x2 = x1 - SolveFunction(function, x1.ToString().Replace(",", ".")) / SolveFunction(firstDerivativeFunction, x1.ToString().Replace(",", "."));
+                    ++iterationsCount;
+                }
 
-            return (x2, error);
+                return (x2, error);
+            }
+            else
+            {
+                string secondDerivative = FindDerivative(firstDerivative);
+                Function secondDerivativeFunction = new Function("f(x) = " + secondDerivative);
+
+                while (Math.Abs(x2 - x1) > epsilon && iterationsCount < maxIterations)
+                {
+                    x1 = x2;
+                    x2 = x1 - SolveFunction(firstDerivativeFunction, x1.ToString().Replace(",", ".")) / SolveFunction(secondDerivativeFunction, x1.ToString().Replace(",", "."));
+                    ++iterationsCount;
+                }
+
+                return (x2, error);
+            }
         }
 
         private bool IsTextValid()
