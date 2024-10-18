@@ -181,7 +181,7 @@ namespace Labs_WPF
         {
             bool error = false;
 
-            if (zeroBtn.IsChecked == true && SolveFunction(function, leftRestriction.ToString().Replace(",", ".")) * SolveFunction(function, rightRestriction.ToString().Replace(",", ".")) > 0)
+            if (SolveFunction(function, leftRestriction.ToString().Replace(",", ".")) * SolveFunction(function, rightRestriction.ToString().Replace(",", ".")) > 0 && zeroBtn.IsChecked == true)
             {
                 return (0, error = true);
             }
