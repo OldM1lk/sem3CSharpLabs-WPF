@@ -46,11 +46,10 @@
 
                 <Button x:Name="calculateBtn" Content="Рассчитать методом Ньютона" FontSize="20" Margin="0,20,0,0" HorizontalAlignment="Center" Width="458" Click="calculateBtn_Click"/>
 
-                <GroupBox Header="Zero / Min / Max" Margin="0,20,0,0" FontSize="20">
+                <GroupBox Header="Zero / Extremum" Margin="0,20,0,0" FontSize="20">
                     <StackPanel>
                         <RadioButton x:Name="zeroBtn" Content="f(x) = 0" FontSize="20" IsChecked="True"/>
-                        <RadioButton x:Name="minBtn" Content="Min" FontSize="20"/>
-                        <RadioButton x:Name="maxBtn" Content="Max" FontSize="20"/>
+                        <RadioButton x:Name="extrBtn" Content="Extremum (Min / Max)" FontSize="20"/>
                     </StackPanel>
                 </GroupBox>
 

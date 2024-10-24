@@ -3,11 +3,11 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Window = System.Windows.Window;
-using Expression = org.mariuszgromada.math.mxparser.Expression;
 using Function = org.mariuszgromada.math.mxparser.Function;
+using Expression = org.mariuszgromada.math.mxparser.Expression;
+using MathNet.Symbolics;
 using OxyPlot.Series;
 using OxyPlot;
-using MathNet.Symbolics;
 
 namespace Labs_WPF
 {
@@ -20,7 +20,7 @@ namespace Labs_WPF
         private Function function;
         private int precision;
         private bool isGraphPlotted = false;
-        private int maxIterations = 100;
+        private int maxIterations = 1000;
 
         public NewtonWindow()
         {
@@ -87,30 +87,10 @@ namespace Labs_WPF
             isGraphPlotted = false;
         }
 
-        private double SolveFunction(Function function, string x)
-        {
-            return new Expression($"f({x})", function).calculate();
-        }
-
-        private void ShowResult(double result, bool error)
-        {
-            if (!error)
-            {
-                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
-                resultValue = Math.Round(resultValue, precision);
-                result = Math.Round(result, precision);
-                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("В заданном интревале отсутствует корень", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
         private void PlotGraph()
         {
-            int left = Convert.ToInt32(tbA.Text);
-            int right = Convert.ToInt32(tbB.Text);
+            double left = Convert.ToDouble(tbA.Text.Replace(".", ","));
+            double right = Convert.ToDouble(tbB.Text.Replace(".", ","));
             List<DataPoint> dot = new List<DataPoint>();
 
             if (left < 5 && left > -5)
@@ -152,7 +132,7 @@ namespace Labs_WPF
 
             function = new Function("f(x) = " + functionTB.Text);
 
-            for (int pointIndex = left; pointIndex <= right; ++pointIndex)
+            for (double pointIndex = left; pointIndex <= right; ++pointIndex)
             {
                 expression = new Expression($"f({pointIndex})", function);
                 double y = expression.calculate();
@@ -168,6 +148,26 @@ namespace Labs_WPF
             isGraphPlotted = true;
         }
 
+        private double SolveFunction(Function function, string x)
+        {
+            return new Expression($"f({x})", function).calculate();
+        }
+
+        private void ShowResult(double result, bool error)
+        {
+            if (!error)
+            {
+                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
+                resultValue = Math.Round(resultValue, precision);
+                result = Math.Round(result, precision);
+                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Ошибка", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }        
+
         public static string FindDerivative(string function)
         {
             var expression = SymbolicExpression.Parse(function);
@@ -180,23 +180,8 @@ namespace Labs_WPF
         private (double, bool) NewtonMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
         {
             bool error = false;
-
-            if (SolveFunction(function, leftRestriction.ToString().Replace(",", ".")) * SolveFunction(function, rightRestriction.ToString().Replace(",", ".")) > 0 && zeroBtn.IsChecked == true)
-            {
-                return (0, error = true);
-            }
-
             string firstDerivative;
-
-            if (maxBtn.IsChecked == true)
-            {
-                firstDerivative = FindDerivative("-(" + functionTB.Text + ")");
-            }
-            else
-            {
-                firstDerivative = FindDerivative(functionTB.Text);
-            }
-            
+            firstDerivative = FindDerivative(functionTB.Text);
             Function firstDerivativeFunction = new Function("f(x) = " + firstDerivative);
             double x1 = rightRestriction;
             double x2 = leftRestriction;
@@ -211,6 +196,11 @@ namespace Labs_WPF
                     ++iterationsCount;
                 }
 
+                if (double.IsNaN(x2) || Math.Round(SolveFunction(function, x2.ToString().Replace(",", ".")), 0) != 0 || iterationsCount == maxIterations)
+                {
+                    return (x2, error = true);
+                }
+
                 return (x2, error);
             }
             else
@@ -223,6 +213,11 @@ namespace Labs_WPF
                     x1 = x2;
                     x2 = x1 - SolveFunction(firstDerivativeFunction, x1.ToString().Replace(",", ".")) / SolveFunction(secondDerivativeFunction, x1.ToString().Replace(",", "."));
                     ++iterationsCount;
+                }
+
+                if (double.IsNaN(x2) || iterationsCount == maxIterations)
+                {
+                    return (x2, error = true);
                 }
 
                 return (x2, error);
