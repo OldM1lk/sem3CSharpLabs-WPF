@@ -89,63 +89,66 @@ namespace Labs_WPF
 
         private void PlotGraph()
         {
-            double left = Convert.ToDouble(tbA.Text.Replace(".", ","));
-            double right = Convert.ToDouble(tbB.Text.Replace(".", ","));
-            List<DataPoint> dot = new List<DataPoint>();
-
-            if (left < 5 && left > -5)
+            if (IsTextValid())
             {
-                left = -5;
+                double left = Convert.ToDouble(tbA.Text.Replace(".", ","));
+                double right = Convert.ToDouble(tbB.Text.Replace(".", ","));
+                List<DataPoint> dot = new List<DataPoint>();
+
+                if (left < 5 && left > -5)
+                {
+                    left = -5;
+                }
+                if (right < 5 && right > -5)
+                {
+                    right = 5;
+                }
+
+                var plotModel = new PlotModel { Title = "График функции" };
+
+                var absicc = new LineSeries
+                {
+                    Title = "Ось абсцисс",
+                    Color = OxyColor.FromRgb(0, 0, 0),
+                    StrokeThickness = 2
+                };
+
+                absicc.Points.Add(new DataPoint(left, 0));
+                absicc.Points.Add(new DataPoint(right, 0));
+
+                var ordinate = new LineSeries
+                {
+                    Title = "Ось ординат",
+                    Color = OxyColor.FromRgb(0, 0, 0),
+                    StrokeThickness = 2,
+                };
+
+                ordinate.Points.Add(new DataPoint(0, right));
+                ordinate.Points.Add(new DataPoint(0, left));
+
+                var lineSeries = new LineSeries
+                {
+                    Title = "f(x)",
+                    Color = OxyColor.FromRgb(0, 255, 0)
+                };
+
+                function = new Function("f(x) = " + functionTB.Text);
+
+                for (double pointIndex = left; pointIndex <= right; ++pointIndex)
+                {
+                    expression = new Expression($"f({pointIndex})", function);
+                    double y = expression.calculate();
+                    dot.Add(new DataPoint(pointIndex, y));
+                }
+
+                lineSeries.Points.AddRange(dot);
+                plotModel.Series.Add(lineSeries);
+                plotModel.Series.Add(ordinate);
+                plotModel.Series.Add(absicc);
+
+                this.graph.Model = plotModel;
+                isGraphPlotted = true;
             }
-            if (right < 5 && right > -5)
-            {
-                right = 5;
-            }
-
-            var plotModel = new PlotModel { Title = "График функции" };
-
-            var absicc = new LineSeries
-            {
-                Title = "Ось абсцисс",
-                Color = OxyColor.FromRgb(0, 0, 0),
-                StrokeThickness = 2
-            };
-
-            absicc.Points.Add(new DataPoint(left, 0));
-            absicc.Points.Add(new DataPoint(right, 0));
-
-            var ordinate = new LineSeries
-            {
-                Title = "Ось ординат",
-                Color = OxyColor.FromRgb(0, 0, 0),
-                StrokeThickness = 2,
-            };
-
-            ordinate.Points.Add(new DataPoint(0, right));
-            ordinate.Points.Add(new DataPoint(0, left));
-
-            var lineSeries = new LineSeries
-            {
-                Title = "f(x)",
-                Color = OxyColor.FromRgb(0, 255, 0)
-            };
-
-            function = new Function("f(x) = " + functionTB.Text);
-
-            for (double pointIndex = left; pointIndex <= right; ++pointIndex)
-            {
-                expression = new Expression($"f({pointIndex})", function);
-                double y = expression.calculate();
-                dot.Add(new DataPoint(pointIndex, y));
-            }
-
-            lineSeries.Points.AddRange(dot);
-            plotModel.Series.Add(lineSeries);
-            plotModel.Series.Add(ordinate);
-            plotModel.Series.Add(absicc);
-
-            this.graph.Model = plotModel;
-            isGraphPlotted = true;
         }
 
         private double SolveFunction(Function function, string x)
