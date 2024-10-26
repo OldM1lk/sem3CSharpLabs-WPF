@@ -91,8 +91,8 @@ namespace Labs_WPF
         {
             if (IsTextValid())
             {
-                double left = Convert.ToDouble(tbA.Text.Replace(".", ","));
-                double right = Convert.ToDouble(tbB.Text.Replace(".", ","));
+                double left = leftRestriction();
+                double right = rightRestriction();
                 List<DataPoint> dot = new List<DataPoint>();
 
                 if (left < 5 && left > -5)
@@ -169,7 +169,31 @@ namespace Labs_WPF
             {
                 MessageBox.Show("Ошибка", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }        
+        }
+
+        private bool IsTextValid()
+        {
+            Regex regex = new Regex(@"^[\d,.-]+$");
+            bool result = true;
+
+            if (string.IsNullOrEmpty(tbA.Text) || !regex.IsMatch(tbA.Text))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задана точка A", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (string.IsNullOrEmpty(tbB.Text) || !regex.IsMatch(tbB.Text))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задана точка B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (string.IsNullOrEmpty(tbE.Text) || !regex.IsMatch(tbE.Text))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return result;
+        }
 
         public static string FindDerivative(string function)
         {
@@ -225,30 +249,6 @@ namespace Labs_WPF
 
                 return (x2, error);
             }
-        }
-
-        private bool IsTextValid()
-        {
-            Regex regex = new Regex(@"^[\d,.-]+$");
-            bool result = true;
-
-            if (string.IsNullOrEmpty(tbA.Text) || !regex.IsMatch(tbA.Text))
-            {
-                result = false;
-                MessageBox.Show("Неправильно задана точка A", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (string.IsNullOrEmpty(tbB.Text) || !regex.IsMatch(tbB.Text))
-            {
-                result = false;
-                MessageBox.Show("Неправильно задана точка B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (string.IsNullOrEmpty(tbE.Text) || !regex.IsMatch(tbE.Text))
-            {
-                result = false;
-                MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            return result;
-        }
+        }        
     }
 }

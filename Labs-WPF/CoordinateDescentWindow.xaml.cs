@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Windows;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using org.mariuszgromada.math.mxparser;
+//using System.Text.RegularExpressions;
+using Window = System.Windows.Window;
+using Function = org.mariuszgromada.math.mxparser.Function;
 using Expression = org.mariuszgromada.math.mxparser.Expression;
+//using MathNet.Symbolics;
 using OxyPlot.Series;
 using OxyPlot;
+using System.Text.RegularExpressions;
 
 namespace Labs_WPF
 {
     /// <summary>
-    /// Логика взаимодействия для GoldenRatioWindow.xaml
+    /// Логика взаимодействия для CoordinateDescentWindow.xaml
     /// </summary>
-    public partial class GoldenRatioWindow : Window
+    public partial class CoordinateDescentWindow : Window
     {
         private Expression expression;
         private Function function;
         private int precision;
         private bool isGraphPlotted = false;
+        private int maxIterations = 100;
 
-        public GoldenRatioWindow()
+        public CoordinateDescentWindow()
         {
             InitializeComponent();
         }
@@ -38,7 +42,7 @@ namespace Labs_WPF
 
             if (IsTextValid())
             {
-                var output = GoldenRatioMethod(function, leftRestriction(), rightRestriction(), epsilon());
+                var output = CoordinateDescentMethod(function, leftRestriction(), rightRestriction() , epsilon());
                 ShowResult(output);
             }
         }
@@ -82,20 +86,6 @@ namespace Labs_WPF
         private void functionTB_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             isGraphPlotted = false;
-        }
-
-        private double SolveFunction(Function function, string x)
-        {
-            return new Expression($"f({x})", function).calculate();
-        }
-
-        private void ShowResult(double result)
-        {
-            double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
-            resultValue = Math.Round(resultValue, precision);
-            resultValue = Math.Abs(resultValue);
-            result = Math.Round(result, precision);
-            MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void PlotGraph()
@@ -162,50 +152,17 @@ namespace Labs_WPF
             }
         }
 
-        public double GoldenRatioMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        private double SolveFunction(Function function, string x)
         {
-            if (maxBtn.IsChecked == true)
-            {
-                function = new Function("f(x) = " + "-(" + functionTB.Text + ")");
-            }
+            return new Expression($"f({x})", function).calculate();
+        }
 
-            double result = double.NaN;
-
-            double leftValue = SolveFunction(function, leftRestriction.ToString().Replace(",", "."));
-            double rightValue = SolveFunction(function, rightRestriction.ToString().Replace(",", "."));
-
-            double d = (Math.Sqrt(5) - 1) / 2;
-
-            double xFirst = rightRestriction - d * (rightRestriction - leftRestriction);
-            double xSecond = leftRestriction + d * (rightRestriction - leftRestriction);
-
-            double firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
-            double secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
-
-
-            while (Math.Abs(rightRestriction - leftRestriction) > epsilon)
-            {
-                if (firstResult < secondResult)
-                {
-                    rightRestriction = xSecond;
-                    xSecond = xFirst;
-                    xFirst = rightRestriction - d * (rightRestriction - leftRestriction);
-                    firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
-                    secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
-                }
-                else
-                {
-                    leftRestriction = xFirst;
-                    xFirst = xSecond;
-                    xSecond = leftRestriction + d * (rightRestriction - leftRestriction);
-                    firstResult = SolveFunction(function, xFirst.ToString().Replace(",", "."));
-                    secondResult = SolveFunction(function, xSecond.ToString().Replace(",", "."));
-                }
-            }
-
-            result = (leftRestriction + rightRestriction) / 2;
-
-            return result;
+        private void ShowResult(double result)
+        {
+            double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
+            resultValue = Math.Round(resultValue, precision);
+            result = Math.Round(result, precision);
+            MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private bool IsTextValid()
@@ -230,6 +187,65 @@ namespace Labs_WPF
             }
 
             return result;
+        }
+
+        private double CoordinateDescentMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
+        {
+            double current;
+            double step = epsilon;
+
+            if (maxBtn.IsChecked == true)
+            {
+                if (SolveFunction(function, leftRestriction.ToString().Replace(",", ".")) > SolveFunction(function, rightRestriction.ToString().Replace(",", ".")))
+                {
+                    current = leftRestriction;
+                }
+                else
+                {
+                    current = rightRestriction;
+                }
+
+                function = new Function("f(x) = " + "-(" + functionTB.Text + ")");
+            }
+            else
+            {
+                if (SolveFunction(function, leftRestriction.ToString().Replace(",", ".")) > SolveFunction(function, rightRestriction.ToString().Replace(",", ".")))
+                {
+                    current = rightRestriction;
+                }
+                else
+                {
+                    current = leftRestriction;
+                }
+            }
+
+            for (int iterationCount = 0; iterationCount < maxIterations; ++iterationCount)
+            {
+                double increasedCurrent = current + step;
+                double increasedValue = SolveFunction(function, increasedCurrent.ToString().Replace(",", "."));
+                double reducedCurrent = current - step;
+                double reducedValue = SolveFunction(function, reducedCurrent.ToString().Replace(",", "."));
+
+                if (increasedValue < reducedValue)
+                {
+                    current = increasedCurrent;
+                }
+                else
+                {
+                    current = reducedCurrent;
+                }
+
+                if (current < leftRestriction)
+                {
+                    return leftRestriction;
+                }
+                if (current > rightRestriction)
+                {
+                    return rightRestriction;
+                }                
+            }
+
+            return current;
         }
     }
 }

@@ -29,5 +29,11 @@ namespace Labs_WPF
             NewtonWindow newtonWindow = new NewtonWindow();
             newtonWindow.Show();
         }
+
+        private void coordinateDescentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CoordinateDescentWindow coordinateDescentWindow = new CoordinateDescentWindow();
+            coordinateDescentWindow.Show();
+        }
     }
 }

@@ -105,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="CoordinateDescentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DichotomyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -120,6 +124,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CoordinateDescentWindow.xaml.cs">
+      <DependentUpon>CoordinateDescentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="DichotomyWindow.xaml.cs">
       <DependentUpon>DichotomyWindow.xaml</DependentUpon>
