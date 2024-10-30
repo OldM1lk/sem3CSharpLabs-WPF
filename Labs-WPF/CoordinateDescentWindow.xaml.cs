@@ -1,14 +1,12 @@
-﻿using System;
-using System.Windows;
-using System.Collections.Generic;
-//using System.Text.RegularExpressions;
-using Window = System.Windows.Window;
-using Function = org.mariuszgromada.math.mxparser.Function;
-using Expression = org.mariuszgromada.math.mxparser.Expression;
-//using MathNet.Symbolics;
+﻿using OxyPlot;
 using OxyPlot.Series;
-using OxyPlot;
+using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Windows;
+using Expression = org.mariuszgromada.math.mxparser.Expression;
+using Function = org.mariuszgromada.math.mxparser.Function;
+using Window = System.Windows.Window;
 
 namespace Labs_WPF
 {
@@ -21,7 +19,7 @@ namespace Labs_WPF
         private Function function;
         private int precision;
         private bool isGraphPlotted = false;
-        private int maxIterations = 100;
+        private int maxIterations = 1000;
 
         public CoordinateDescentWindow()
         {
@@ -42,7 +40,7 @@ namespace Labs_WPF
 
             if (IsTextValid())
             {
-                var output = CoordinateDescentMethod(function, leftRestriction(), rightRestriction() , epsilon());
+                var output = CoordinateDescentMethod(function, leftRestriction(), rightRestriction(), epsilon());
                 ShowResult(output);
             }
         }
@@ -180,7 +178,7 @@ namespace Labs_WPF
                 result = false;
                 MessageBox.Show("Неправильно задана точка B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (string.IsNullOrEmpty(tbE.Text) || !regex.IsMatch(tbE.Text))
+            else if (string.IsNullOrEmpty(tbE.Text) || !regex.IsMatch(tbE.Text) || tbE.Text.Contains(".") || tbE.Text.Contains(","))
             {
                 result = false;
                 MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -193,6 +191,7 @@ namespace Labs_WPF
         {
             double current;
             double step = epsilon;
+            double iteration = 1;
 
             if (maxBtn.IsChecked == true)
             {
@@ -219,20 +218,21 @@ namespace Labs_WPF
                 }
             }
 
-            for (int iterationCount = 0; iterationCount < maxIterations; ++iterationCount)
+            while (iteration < maxIterations)
             {
-                double increasedCurrent = current + step;
-                double increasedValue = SolveFunction(function, increasedCurrent.ToString().Replace(",", "."));
-                double reducedCurrent = current - step;
-                double reducedValue = SolveFunction(function, reducedCurrent.ToString().Replace(",", "."));
+                double currentValue = SolveFunction(function, current.ToString().Replace(",", "."));
+                double leftX = current - step;
+                double leftValue = SolveFunction(function, leftX.ToString().Replace(",", "."));
+                double rightX = current + step;
+                double rightValue = SolveFunction(function, rightX.ToString().Replace(",", "."));
 
-                if (increasedValue < reducedValue)
+                if (leftValue < current)
                 {
-                    current = increasedCurrent;
+                    current = leftX;
                 }
                 else
                 {
-                    current = reducedCurrent;
+                    current = rightX;
                 }
 
                 if (current < leftRestriction)
@@ -242,7 +242,9 @@ namespace Labs_WPF
                 if (current > rightRestriction)
                 {
                     return rightRestriction;
-                }                
+                }
+
+                ++iteration;
             }
 
             return current;
