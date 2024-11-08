@@ -7,6 +7,7 @@ using org.mariuszgromada.math.mxparser;
 using Expression = org.mariuszgromada.math.mxparser.Expression;
 using OxyPlot.Series;
 using OxyPlot;
+using System.Linq;
 
 namespace Labs_WPF
 {
@@ -85,26 +86,6 @@ namespace Labs_WPF
             isGraphPlotted = false;
         }
 
-        private double SolveFunction(Function function, string x)
-        {
-            return new Expression($"f({x})", function).calculate();
-        }
-
-        private void ShowResult(double result, bool error)
-        {
-            if (!error)
-            {
-                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
-                resultValue = Math.Round(resultValue, precision);
-                result = Math.Round(result, precision);
-                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("В заданном интревале отсутствует корень", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-        }
-
         private void PlotGraph()
         {
             if (IsTextValid())
@@ -127,7 +108,7 @@ namespace Labs_WPF
                 var absicc = new LineSeries
                 {
                     Title = "Ось абсцисс",
-                    Color = OxyColor.FromRgb(0, 0, 0),
+                    Color = OxyColors.Black,
                     StrokeThickness = 2
                 };
 
@@ -137,7 +118,7 @@ namespace Labs_WPF
                 var ordinate = new LineSeries
                 {
                     Title = "Ось ординат",
-                    Color = OxyColor.FromRgb(0, 0, 0),
+                    Color = OxyColors.Black,
                     StrokeThickness = 2,
                 };
 
@@ -147,7 +128,7 @@ namespace Labs_WPF
                 var lineSeries = new LineSeries
                 {
                     Title = "f(x)",
-                    Color = OxyColor.FromRgb(0, 255, 0)
+                    Color = OxyColors.Green
                 };
 
                 function = new Function("f(x) = " + functionTB.Text);
@@ -167,6 +148,55 @@ namespace Labs_WPF
                 this.graph.Model = plotModel;
                 isGraphPlotted = true;
             }
+        }
+
+        private double SolveFunction(Function function, string x)
+        {
+            return new Expression($"f({x})", function).calculate();
+        }
+
+        private void ShowResult(double result, bool error)
+        {
+            if (!error)
+            {
+                double resultValue = SolveFunction(function, result.ToString().Replace(",", "."));
+                resultValue = Math.Round(resultValue, precision);
+                result = Math.Round(result, precision);
+                MessageBox.Show($"x = {result}\nf(x) = {resultValue}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("В заданном интревале отсутствует корень", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }        
+
+        private bool IsTextValid()
+        {
+            Regex regex = new Regex(@"^[\d,.-]+$");
+            bool result = true;
+
+            if (string.IsNullOrEmpty(tbA.Text) || !regex.IsMatch(tbA.Text) || tbA.Text.Count(f => f == '-') > 1)
+            {
+                result = false;
+                MessageBox.Show("Неправильно задана точка A", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (string.IsNullOrEmpty(tbB.Text) || !regex.IsMatch(tbB.Text) || tbB.Text.Count(f => f == '-') > 1)
+            {
+                result = false;
+                MessageBox.Show("Неправильно задана точка B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (string.IsNullOrEmpty(tbE.Text) || !regex.IsMatch(tbE.Text) || tbE.Text.Contains(".") || tbE.Text.Contains(",") || tbE.Text.Contains("-"))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Convert.ToDouble(tbA.Text.Replace(".", ",")) > Convert.ToDouble(tbB.Text.Replace(".", ",")) || Convert.ToDouble(tbA.Text.Replace(".", ",")) == Convert.ToDouble(tbB.Text.Replace(".", ",")))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задано значение A или B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            return result;
         }
 
         private (double, bool) DichotomyMethod(Function function, double leftRestriction, double rightRestriction, double epsilon)
@@ -208,30 +238,6 @@ namespace Labs_WPF
             }
 
             return (current, error);
-        }
-
-        private bool IsTextValid()
-        {
-            Regex regex = new Regex(@"^[\d,.-]+$");
-            bool result = true;
-
-            if (string.IsNullOrEmpty(tbA.Text) || !regex.IsMatch(tbA.Text))
-            {
-                result = false;
-                MessageBox.Show("Неправильно задана точка A", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (string.IsNullOrEmpty(tbB.Text) || !regex.IsMatch(tbB.Text))
-            {
-                result = false;
-                MessageBox.Show("Неправильно задана точка B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (string.IsNullOrEmpty(tbE.Text) || !regex.IsMatch(tbE.Text) || tbE.Text.Contains(".") || tbE.Text.Contains(",") || tbE.Text.Contains("-"))
-            {
-                result = false;
-                MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-            return result;
-        }
+        }        
     }
 }

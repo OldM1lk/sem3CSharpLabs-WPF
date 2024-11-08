@@ -8,6 +8,7 @@ using Expression = org.mariuszgromada.math.mxparser.Expression;
 using MathNet.Symbolics;
 using OxyPlot.Series;
 using OxyPlot;
+using System.Linq;
 
 namespace Labs_WPF
 {
@@ -109,7 +110,7 @@ namespace Labs_WPF
                 var absicc = new LineSeries
                 {
                     Title = "Ось абсцисс",
-                    Color = OxyColor.FromRgb(0, 0, 0),
+                    Color = OxyColors.Black,
                     StrokeThickness = 2
                 };
 
@@ -119,7 +120,7 @@ namespace Labs_WPF
                 var ordinate = new LineSeries
                 {
                     Title = "Ось ординат",
-                    Color = OxyColor.FromRgb(0, 0, 0),
+                    Color = OxyColors.Black,
                     StrokeThickness = 2,
                 };
 
@@ -129,7 +130,7 @@ namespace Labs_WPF
                 var lineSeries = new LineSeries
                 {
                     Title = "f(x)",
-                    Color = OxyColor.FromRgb(0, 255, 0)
+                    Color = OxyColors.Green
                 };
 
                 function = new Function("f(x) = " + functionTB.Text);
@@ -176,12 +177,12 @@ namespace Labs_WPF
             Regex regex = new Regex(@"^[\d,.-]+$");
             bool result = true;
 
-            if (string.IsNullOrEmpty(tbA.Text) || !regex.IsMatch(tbA.Text))
+            if (string.IsNullOrEmpty(tbA.Text) || !regex.IsMatch(tbA.Text) || tbA.Text.Count(f => f == '-') > 1)
             {
                 result = false;
                 MessageBox.Show("Неправильно задана точка A", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (string.IsNullOrEmpty(tbB.Text) || !regex.IsMatch(tbB.Text))
+            else if (string.IsNullOrEmpty(tbB.Text) || !regex.IsMatch(tbB.Text) || tbB.Text.Count(f => f == '-') > 1)
             {
                 result = false;
                 MessageBox.Show("Неправильно задана точка B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -190,6 +191,11 @@ namespace Labs_WPF
             {
                 result = false;
                 MessageBox.Show("Неправильно задано значение E", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (Convert.ToDouble(tbA.Text.Replace(".", ",")) > Convert.ToDouble(tbB.Text.Replace(".", ",")) || Convert.ToDouble(tbA.Text.Replace(".", ",")) == Convert.ToDouble(tbB.Text.Replace(".", ",")))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задано значение A или B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             return result;
