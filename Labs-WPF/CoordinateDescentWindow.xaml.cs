@@ -20,7 +20,6 @@ namespace Labs_WPF
         private Function function;
         private int precision;
         private bool isGraphPlotted = false;
-        private int maxIterations = 10000;
 
         public CoordinateDescentWindow()
         {
@@ -81,6 +80,18 @@ namespace Labs_WPF
                 return Math.Pow(10, -precision);
             }
         }
+
+        //private int maxIteration()
+        //{
+        //    if (IsTextValid())
+        //    {
+        //        return Convert.ToInt32(tbIteration.Text);
+        //    }
+        //    else
+        //    {
+        //        return 1000;
+        //    }
+        //}
 
         private void functionTB_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
@@ -189,6 +200,11 @@ namespace Labs_WPF
                 result = false;
                 MessageBox.Show("Неправильно задано значение A или B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            else if (string.IsNullOrEmpty(tbIteration.Text) || !regex.IsMatch(tbIteration.Text) || tbIteration.Text.Contains(".") || tbIteration.Text.Contains(",") || tbIteration.Text.Contains("-"))
+            {
+                result = false;
+                MessageBox.Show("Неправильно задано кол-во итераций", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
             return result;
         }
@@ -197,7 +213,8 @@ namespace Labs_WPF
         {
             double current;
             double step = epsilon;
-            double iteration = 1;
+            int iteration = 1;
+            int maxIterations = Convert.ToInt32(tbIteration.Text);
 
             if (maxBtn.IsChecked == true)
             {

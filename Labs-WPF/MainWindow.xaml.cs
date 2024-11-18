@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Labs_WPF
 {
@@ -12,10 +13,33 @@ namespace Labs_WPF
             InitializeComponent();
         }
 
+        private void dichotomyMethodBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Используется для нахождения корня уравнения f(x) = 0", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Сущность метода - постепенное приближение к точке пересечения, находящейся в заданном интервале", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Результат - середина найденного отрезка", FontSize = 14 });
+            toolTip.Content = toolTipPanel;
+            dichotomyMethodBtn.ToolTip = toolTip;
+        }
+
         private void dichotomyMethodBtn_Click(object sender, RoutedEventArgs e)
         {
             DichotomyWindow dichotomyWindow = new DichotomyWindow();
             dichotomyWindow.Show();
+        }
+
+        private void goldenRatioMethodBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Используется для нахождения минимума или максимума функции", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Сущность метода - деление заданного интервала в пропорции золотого сечения", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Результат - середина финального отрезка", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Метод хорош для одномерных задач и медленно сходящихся функций", FontSize = 14 });
+            toolTip.Content = toolTipPanel;
+            goldenRatioMethodBtn.ToolTip = toolTip;
         }
 
         private void goldenRatioMethodBtn_Click(object sender, RoutedEventArgs e)
@@ -24,10 +48,32 @@ namespace Labs_WPF
             goldenRatioWindow.Show();
         }
 
+        private void newtonMethodBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Используется для нахождения минимума, максимума функции, а также точки пересечения её с осью абсциис", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Сущность метода - нахождение касательных к функции", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Метод хорош для одномерных задач и быстро сходящихся функций", FontSize = 14 });
+            toolTip.Content = toolTipPanel;
+            newtonMethodBtn.ToolTip = toolTip;
+        }
+
         private void newtonMethodBtn_Click(object sender, RoutedEventArgs e)
         {
             NewtonWindow newtonWindow = new NewtonWindow();
             newtonWindow.Show();
+        }
+
+        private void coordinateDescentBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Используется для нахождения минимума, максимума функции", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Сущность метода - постепенное приближение с заданным шагом", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Метод плох для одномерных задач", FontSize = 14 });
+            toolTip.Content = toolTipPanel;
+            coordinateDescentBtn.ToolTip = toolTip;
         }
 
         private void coordinateDescentBtn_Click(object sender, RoutedEventArgs e)
@@ -35,5 +81,24 @@ namespace Labs_WPF
             CoordinateDescentWindow coordinateDescentWindow = new CoordinateDescentWindow();
             coordinateDescentWindow.Show();
         }
+
+        private void sortingBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Пузырьковая сортировка", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Сортировка вставками", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Шейкерная сортировка", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Быстрая сортировка", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Болотная сортировка", FontSize = 14 });
+            toolTip.Content = toolTipPanel;
+            sortingBtn.ToolTip = toolTip;
+        }
+
+        private void sortingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SortingWindow sortingWindow = new SortingWindow();
+            sortingWindow.Show();
+        }        
     }
 }

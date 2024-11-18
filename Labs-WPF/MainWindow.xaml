@@ -10,11 +10,11 @@
         MinHeight="450" MinWidth="800">
     <Grid>
         <UniformGrid Rows="4" Columns="2">
-            <Button x:Name="dichotomyMethodBtn" Content="1. Метод Дихотомии" FontSize="20" Margin="10, 10, 5, 5" Click="dichotomyMethodBtn_Click"/>
-            <Button x:Name="goldenRatioMethodBtn" Content="2. Метод Золотого Сечения" FontSize="20" Margin="5, 10, 10, 5" Click="goldenRatioMethodBtn_Click"/>
-            <Button x:Name="newtonMethodBtn" Content="3. Метод Ньютона" FontSize="20" Margin="10, 5, 5, 5" Click="newtonMethodBtn_Click"/>
-            <Button x:Name="coordinateDescentBtn"  Content="4. Метод покоординатного спуска" FontSize="20" Margin="5, 5, 10, 5" Click="coordinateDescentBtn_Click"/>
-            <Button x:Name="btn5" Content="5" FontSize="20" Margin="10, 5, 5, 5"/>
+            <Button x:Name="dichotomyMethodBtn" Content="1. Метод Дихотомии" FontSize="20" Margin="10, 10, 5, 5" Click="dichotomyMethodBtn_Click" Initialized="dichotomyMethodBtn_Initialized"/>
+            <Button x:Name="goldenRatioMethodBtn" Content="2. Метод Золотого Сечения" FontSize="20" Margin="5, 10, 10, 5" Click="goldenRatioMethodBtn_Click" Initialized="goldenRatioMethodBtn_Initialized"/>
+            <Button x:Name="newtonMethodBtn" Content="3. Метод Ньютона" FontSize="20" Margin="10, 5, 5, 5" Click="newtonMethodBtn_Click" Initialized="newtonMethodBtn_Initialized"/>
+            <Button x:Name="coordinateDescentBtn"  Content="4. Метод покоординатного спуска" FontSize="20" Margin="5, 5, 10, 5" Click="coordinateDescentBtn_Click" Initialized="coordinateDescentBtn_Initialized"/>
+            <Button x:Name="sortingBtn" Content="5. Олимпиадные сортировки" FontSize="20" Margin="10, 5, 5, 5" Click="sortingBtn_Click" Initialized="sortingBtn_Initialized"/>
             <Button x:Name="btn6" Content="6" FontSize="20" Margin="5, 5, 10, 5"/>
             <Button x:Name="btn7" Content="7" FontSize="20" Margin="10, 5, 5, 10"/>
             <Button x:Name="btn8" Content="8" FontSize="20" Margin="5, 5, 10, 10"/>

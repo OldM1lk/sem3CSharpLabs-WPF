@@ -42,6 +42,11 @@
                         <TextBlock Text="e (кол-во знаков после запятой) =" FontSize="20" VerticalAlignment="Center"/>
                         <TextBox x:Name="tbE" Text="3" FontSize="20" Margin="5,0" Width="135"/>
                     </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,5">
+                        <TextBlock Text="Введите кол-во итераций =" FontSize="20" VerticalAlignment="Center"/>
+                        <TextBox x:Name="tbIteration" Text="1000" FontSize="20" Margin="5,0" Width="197"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <Button x:Name="calculateBtn" Content="Рассчитать методом покоординатного спуска" FontSize="20" Margin="0,20,0,0" HorizontalAlignment="Center" Width="458" Click="calculateBtn_Click"/>
