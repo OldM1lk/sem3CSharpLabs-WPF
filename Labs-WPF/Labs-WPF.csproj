@@ -129,6 +129,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SortingWindow.xaml.cs">
+      <DependentUpon>SortingWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="CoordinateDescentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -163,6 +166,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewtonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SortingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
