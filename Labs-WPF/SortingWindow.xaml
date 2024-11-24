@@ -4,23 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Сортировки" Height="550" Width="960" WindowStartupLocation="CenterScreen"
-        MinHeight="550" MinWidth="960">
+        Title="Сортировки" Height="600" Width="960" WindowStartupLocation="CenterScreen"
+        MinHeight="600" MinWidth="960">
 
     <Grid>
         <Menu VerticalAlignment="Top" FontSize="16">
-            <Button x:Name="manualInputBtn" Content="Ручной ввод" IsEnabled="False"></Button>
-            <Button x:Name="SortBtn" Content="Сортировать" ></Button>
-            <Button x:Name="ClearBtn" Content="Очистить" ></Button>
+            <Button x:Name="sortBtn" Content="Сортировать" Click="sortBtn_Click"/>
+            <Button x:Name="clearBtn" Content="Очистить" Click="clearBtn_Click"/>
         </Menu>
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2.5*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-
-
             <Viewbox VerticalAlignment="Top">
                 <StackPanel Grid.Column="0" Margin="10">
                     <GroupBox Header="Сортировки" Margin="0,10,0,10">
@@ -30,57 +26,63 @@
                             <CheckBox x:Name="quickSortCB" Content="Быстрая" IsChecked="True"/>
                             <CheckBox x:Name="shakerSortCB" Content="Шейкерная" IsChecked="True"/>
                             <StackPanel Orientation="Horizontal">
-                                <CheckBox x:Name="bogoSortCB" Content="Болотная" IsChecked="True" Click="bogoSortCB_Click"/>
+                                <CheckBox x:Name="bogoSortCB" Content="Болотная" IsChecked="True" VerticalAlignment="Center" Checked="bogoSortCB_Checked" Unchecked="bogoSortCB_Unchecked"/>
                                 <TextBlock Margin="44,0,5,0">Макс. итераций:</TextBlock>
-                                <TextBox x:Name="bogoSortIterationsTB" Width="75" Text="100"/>
+                                <TextBox x:Name="bogoSortIterationsTB" Width="75" Text="1000"/>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-
                     <GroupBox Header="Тип ввода" Margin="0,0,0,10">
                         <StackPanel>
-                            <RadioButton GroupName="InputType" x:Name="manualInputRB" Content="Ручной" Margin="0,0,0,5" Checked="manualInputRB_Checked"/>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5" >
-                                <RadioButton GroupName="InputType" x:Name="generateRB" Content="Генерация" IsChecked="True" Click="generateRB_Click"/>
-                                <TextBlock Margin="61,0,5,0">Количество:</TextBlock>
-                                <TextBox x:Name="generateElementsNumberTB" Width="75" Text="100"/>
+                            <RadioButton GroupName="InputType" x:Name="manualInputRB" Content="Ручной" Checked="manualInputRB_Checked" Unchecked="manualInputRB_Unchecked" VerticalAlignment="Center" Margin="0,5,0,5"/>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,5" VerticalAlignment="Center">
+                                    <RadioButton GroupName="InputType" x:Name="generateRB" Content="Генерация" IsChecked="True" VerticalAlignment="Center" Checked="generateRB_Checked" Unchecked="generateRB_Unchecked"/>
+                                    <TextBlock Margin="61,0,5,0">Количество:</TextBlock>
+                                    <TextBox x:Name="generateElementsNumberTB" Width="75" Text="100"/>
+                                </StackPanel>
+                                <StackPanel x:Name="numbersTypeSP" Orientation="Horizontal" Margin="20,5,0,5" VerticalAlignment="Center">
+                                    <RadioButton GroupName="NumbersType" x:Name="intRB" Content="Целые" IsChecked="True"/>
+                                    <RadioButton GroupName="NumbersType" x:Name="doubleRB" Content="Дробные" Margin="10,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Margin="20,0,0,10" HorizontalAlignment="Left">
+                                    <TextBlock>Минимальное число:</TextBlock>
+                                    <TextBox x:Name="minNumberTB" Width="100" Text="-100" HorizontalAlignment="Left" Margin="0,0,0,5"/>
+                                    <TextBlock>Максимальное число:</TextBlock>
+                                    <TextBox x:Name="maxNumberTB" Width="100" Text="100" HorizontalAlignment="Left"/>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton GroupName="InputType" x:Name="fileInputRB" Content="Из файла" Click="fileInputRB_Click"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <RadioButton GroupName="InputType" x:Name="fileInputRB" Content="Из файла" VerticalAlignment="Center" Checked="fileInputRB_Checked" Unchecked="fileInputRB_Unchecked"/>
                                 <Button x:Name="chooseFileBtn" Content="Выбрать файл" Margin="134,0,0,0" IsEnabled="False" Click="chooseFileBtn_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
-
-                    <StackPanel Grid.Column="0" Margin="0,0,0,10" HorizontalAlignment="Left">
-                        <TextBlock>Минимальное число для генерации:</TextBlock>
-                        <TextBox x:Name="minNumberTB" Width="100" Text="-10" HorizontalAlignment="Left" Margin="0,0,0,5"/>
-                        <TextBlock>Максимальное число:</TextBlock>
-                        <TextBox x:Name="maxNumberTB" Width="100" Text="10" HorizontalAlignment="Left"/>
-                    </StackPanel>
-
                     <GroupBox Header="Сортировать по">
                         <StackPanel>
-                            <RadioButton x:Name="ascendingSortRB" Content="Возрастанию" IsChecked="True" Margin="0,0,0,5"/>
-                            <RadioButton x:Name="descendingSortRB" Content="Убыванию"/>
+                            <RadioButton x:Name="ascendingSortRB" Content="Возрастанию" IsChecked="True" Margin="0,5,0,5" VerticalAlignment="Center"/>
+                            <RadioButton x:Name="descendingSortRB" Content="Убыванию" VerticalAlignment="Center"/>
                         </StackPanel>
                     </GroupBox>
                 </StackPanel>
             </Viewbox>
-
             <Grid Grid.Column="1">
                 <Viewbox VerticalAlignment="Top">
                     <Grid Grid.Column="1">
-                        <GroupBox Header="Таблица результатов" Margin="0,13,5,0">
-                            <DataGrid x:Name="resultGrid" AutoGenerateColumns="False" CanUserAddRows="False" Height="175">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn x:Name="Method"  Header="Метод"/>
-                                    <DataGridTextColumn x:Name="Array"  Header="Массив"/>
-                                    <DataGridTextColumn x:Name="Iterations" Header="Итерации"/>
-                                    <DataGridTextColumn x:Name="Time" Header="Время"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </GroupBox>
+                        <StackPanel Orientation="Vertical">
+                            <GroupBox Header="Таблица результатов" Margin="0,16,5,0">
+                                <DataGrid x:Name="resultGrid" AutoGenerateColumns="False" Height="175" CanUserAddRows="False" IsReadOnly="True">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Название" Binding="{Binding NameOfSort}" MinWidth="62" Width="SizeToCells"/>
+                                        <DataGridTextColumn Header="Отсортированный массив" Binding="{Binding SortedArray}" Width="SizeToHeader"/>
+                                        <DataGridTextColumn Header="Итерации" Binding="{Binding Iterations}" MinWidth="64" Width="SizeToCells"/>
+                                        <DataGridTextColumn Header="Время" Binding="{Binding Time}" MinWidth="44" Width="SizeToCells"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </GroupBox>
+                            <TextBlock Margin="2,5,0,0">Ручной ввод (через пробел)</TextBlock>
+                            <TextBox x:Name="manualInputTB" Text="1 2 3 4 5 6 7 8 9 10" Margin="2,5,0,0" Height="100" Width="335" HorizontalAlignment="Left" IsEnabled="False" TextWrapping="Wrap"/>
+                        </StackPanel>
                     </Grid>
                 </Viewbox>
             </Grid>
