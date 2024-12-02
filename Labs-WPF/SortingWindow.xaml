@@ -10,7 +10,7 @@
     <Grid>
         <Menu VerticalAlignment="Top" FontSize="16">
             <Button x:Name="sortBtn" Content="Сортировать" Click="sortBtn_Click"/>
-            <Button x:Name="clearBtn" Content="Очистить" Click="clearBtn_Click"/>
+            <Button x:Name="clearBtn" Content="Очистить таблицу" Click="clearBtn_Click"/>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>

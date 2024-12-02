@@ -108,25 +108,7 @@ namespace Labs_WPF
 
         private void clearBtn_Click(object sender, RoutedEventArgs e)
         {
-            bubbleSortCB.IsChecked = true;
-            insertSortCB.IsChecked = true;
-            quickSortCB.IsChecked = true;
-            shakerSortCB.IsChecked = true;
-            bogoSortCB.IsChecked = true;
-            bogoSortIterationsTB.IsEnabled = true;
-            bogoSortIterationsTB.Text = "1000";
-            generateRB.IsChecked = true;
-            generateElementsNumberTB.IsEnabled = true;
-            generateElementsNumberTB.Text = "100";
-            numbersTypeSP.IsEnabled = true;
-            intRB.IsChecked = true;
-            minNumberTB.IsEnabled = true;
-            minNumberTB.Text = "-100";
-            maxNumberTB.IsEnabled = true;
-            maxNumberTB.Text = "100";
-            ascendingSortRB.IsChecked = true;
             Results.Clear();
-            manualInputTB.Text = "1 2 3 4 5 6 7 8 9 10";
         }
 
         private void sortBtn_Click(object sender, RoutedEventArgs e)

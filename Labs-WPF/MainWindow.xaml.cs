@@ -99,6 +99,23 @@ namespace Labs_WPF
         {
             SortingWindow sortingWindow = new SortingWindow();
             sortingWindow.Show();
-        }        
+        }
+
+        private void integralBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Вычисление определенного интеграла", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Методы:", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "1. Прямоугольников", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "2. Трапеций", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "3. Симпсона (парабол)", FontSize = 14 });
+        }
+
+        private void integralBtn_Click(object sender, RoutedEventArgs e)
+        {
+            IntegralWindow integralWindow = new IntegralWindow();
+            integralWindow.Show();
+        }
     }
 }
