@@ -5,7 +5,6 @@ using System.Windows;
 using Microsoft.Win32;
 using ClosedXML.Excel;
 using System.Diagnostics;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 
