@@ -10,8 +10,8 @@
         MinHeight="540" MinWidth="960">
     <Grid>
         <Menu VerticalAlignment="Top" FontSize="16">
-            <Button x:Name="plotBtn" Content="Построить"/>
-            <Button x:Name="calculateBtn" Content="Расчитать"/>
+            <Button x:Name="plotBtn" Content="Построить" Click="plotBtn_Click"/>
+            <Button x:Name="calculateBtn" Content="Расчитать" Click="calculateBtn_Click"/>
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -22,18 +22,27 @@
                 <StackPanel>
                     <TextBlock Text="Введите интеграл:" Margin="0,10,0,5"/>
                     <StackPanel>
-                        <TextBox x:Name="upperLimitTB" Text="10" Width="48" HorizontalAlignment="Left"/>
+                        <TextBox x:Name="upperLimitTB" Text="10" Width="48" HorizontalAlignment="Left" TextChanged="integralTB_TextChanged"/>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0" VerticalAlignment="Center">
                             <TextBlock Text="∫" VerticalAlignment="Center"/>
                             <TextBox x:Name="integralTB" Text="x" Margin="5,0,5,0" Width="228" TextChanged="integralTB_TextChanged"/>
                             <TextBlock Text="dx" VerticalAlignment="Center"/>
                         </StackPanel>
-                        <TextBox x:Name="lowerLimitTB" Text="-10" Width="48" HorizontalAlignment="Left" Margin="0,5,0,0"/>
+                        <TextBox x:Name="lowerLimitTB" Text="-10" Width="48" TextChanged="integralTB_TextChanged" HorizontalAlignment="Left" Margin="0,5,0,0"/>
                         <GroupBox Header="Методы" Margin="0,10,0,0">
                             <StackPanel>
-                                <CheckBox x:Name="rectangleMethodCB" Content="Прямогольников" IsChecked="True"/>
-                                <CheckBox x:Name="trapezoidMethodCB" Content="Трапеций" IsChecked="True"/>
-                                <CheckBox x:Name="simpsonMethodCB" Content="Симпсона" IsChecked="True"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox x:Name="rectangleMethodCB" Content="Прямогольников" IsChecked="True"/>
+                                    <CheckBox x:Name="rectangleVisualizationCB" Content="Визуализировать" IsChecked="False" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox x:Name="trapezoidMethodCB" Content="Трапеций" IsChecked="True"/>
+                                    <CheckBox x:Name="trapezoidVisualizationCB" Content="Визуализировать" IsChecked="False" Margin="46,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox x:Name="simpsonMethodCB" Content="Симпсона" IsChecked="True"/>
+                                    <CheckBox x:Name="simpsonVisualizationCB" Content="Визуализировать" IsChecked="False" Margin="44,0,0,0" IsEnabled="False"/>
+                                </StackPanel>
                             </StackPanel>
                         </GroupBox>
                         <StackPanel Orientation="Horizontal" Margin="0,5">

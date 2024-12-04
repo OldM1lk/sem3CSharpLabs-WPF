@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System.Collections.Generic;
+using OxyPlot.Annotations;
 
 namespace Labs_WPF
 {
@@ -28,28 +29,28 @@ namespace Labs_WPF
 
         private double LowerLimit()
         {
-            return Convert.ToDouble(lowerLimitTB.Text.Replace(".", ","));
+            return Convert.ToDouble(lowerLimitTB.Text.Replace(",", "."));
         }
 
         private double UpperLimit()
         {
-            return Convert.ToDouble(upperLimitTB.Text.Replace(".", ","));
+            return Convert.ToDouble(upperLimitTB.Text.Replace(",", "."));
         }
 
-        private double PartitionsCount()
+        private uint PartitionsCount()
         {
-            return Convert.ToDouble(partitionsCountTB.Text);
+            return Convert.ToUInt32(partitionsCountTB.Text);
         }
 
-        private double Epsilon()
+        private int Epsilon()
         {
-            if (tbE.Text.Replace(".", ",").Contains(","))
+            if (tbE.Text.Replace(",", ".").Contains(","))
             {
                 MessageBox.Show("Неправильно задано значение E, оно будет заменено на значение по умолчанию", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return 3;
             }
 
-            precision = Convert.ToUInt16(tbE.Text);
+            precision = Convert.ToInt16(tbE.Text);
 
             if (precision < 0)
             {
@@ -61,9 +62,65 @@ namespace Labs_WPF
                 MessageBox.Show("Слишком большое значение E, оно будет заменено на значение по умолчанию", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return 3;
             }
-            else
+
+            return precision;
+        }
+
+        private void ShowResult(List<string> output)
+        {
+            MessageBox.Show($"{string.Join("\n", output)}", "Результат", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void calculateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> results = new List<string>();
+
+            if (!isGraphPlotted)
             {
-                return Math.Pow(10, -precision);
+                PlotGraph();
+                isGraphPlotted = true;
+            }
+
+            if (IsValuesValid())
+            {
+                if (rectangleMethodCB.IsChecked == true)
+                {
+                    if (rectangleVisualizationCB.IsChecked == true)
+                    {
+                        RectangleVisualization(function, LowerLimit(), UpperLimit(), PartitionsCount());
+                    }
+                    double rectangleResult = RectangleMethod(function, LowerLimit(), UpperLimit(), PartitionsCount());
+                    results.Add($"Метод прямоугольников: {Math.Round(rectangleResult, Epsilon())}");
+                }
+                if (trapezoidMethodCB.IsChecked == true)
+                {
+                    if (trapezoidVisualizationCB.IsChecked == true)
+                    {
+                        TrapezoidVisualization(function, LowerLimit(), UpperLimit(), PartitionsCount());
+                    }
+                    double trapezoidResult = TrapezoidMethod(function, LowerLimit(), UpperLimit(), PartitionsCount());
+                    results.Add($"Метод трапеций: {Math.Round(trapezoidResult, Epsilon())}");
+                }
+                if (simpsonMethodCB.IsChecked == true)
+                {
+                    if (simpsonVisualizationCB.IsChecked == true)
+                    {
+
+                    }
+                    double simpsonResult = SimpsonMethod(function, LowerLimit(), UpperLimit(), PartitionsCount());
+                    results.Add($"Метод симпсона: {Math.Round(simpsonResult, Epsilon())}");
+                }
+
+                ShowResult(results);
+            }
+        }
+
+        private void plotBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (!isGraphPlotted)
+            {
+                PlotGraph();
+                isGraphPlotted = true;
             }
         }
 
@@ -97,7 +154,7 @@ namespace Labs_WPF
                 result = false;
                 MessageBox.Show("Неправильно задано кол-во разбиений", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (Convert.ToDouble(lowerLimitTB.Text.Replace(".", ",")) > Convert.ToDouble(upperLimitTB.Text.Replace(".", ",")) || Convert.ToDouble(lowerLimitTB.Text.Replace(".", ",")) == Convert.ToDouble(upperLimitTB.Text.Replace(".", ",")))
+            else if (Convert.ToDouble(lowerLimitTB.Text.Replace(",", ".")) > Convert.ToDouble(upperLimitTB.Text.Replace(",", ".")) || Convert.ToDouble(lowerLimitTB.Text.Replace(",", ".")) == Convert.ToDouble(upperLimitTB.Text.Replace(",", ".")))
             {
                 result = false;
                 MessageBox.Show("Неправильно задано значение A или B", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -175,6 +232,151 @@ namespace Labs_WPF
             return new Expression($"f({x})", function).calculate();
         }
 
+        private double RectangleMethod(Function function, double a, double b, uint n)
+        {
+            double result = 0;
+            double h = (b - a) / n;
+            double current = a;
+            double currentResult = 0;
+            string x;
 
+            while (current <= b - h)
+            {
+                x = current.ToString().Replace(",", ".");
+                currentResult = SolveFunction(function, x) * h;
+
+                result += Math.Abs(currentResult);
+                current += h;
+            }
+
+            return result;
+        }
+
+        private void RectangleVisualization(Function function, double a, double b, uint n)
+        {
+            var model = graph.Model;
+            double h = (b - a) / n;
+            double current = a;
+            double currentResult = 0;
+            string x;
+
+            while (current <= b - h)
+            {
+                x = currentResult.ToString().Replace(",", ".");
+                currentResult = SolveFunction(function, x);
+
+                var rectangle = new RectangleAnnotation
+                {
+                    MinimumX = current,
+                    MaximumX = current + h,
+                    MinimumY = 0,
+                    MaximumY = currentResult,
+                    Fill = OxyColors.LightGreen
+                };
+
+                model.Annotations.Add(rectangle);
+                current += h;
+            }
+        }
+
+        private double TrapezoidMethod(Function function, double a, double b, uint n)
+        {
+            double result = 0;
+            double h = (b - a) / n;
+            double current = a + h;
+            string x1;
+            string x2;
+            double function1;
+            double function2;
+
+            while (current <= b)
+            {
+                x1 = (current - h).ToString().Replace(",", ".");
+                x2 = current.ToString().Replace(",", ".");
+                function1 = SolveFunction(function, x1);
+                function2 = SolveFunction(function, x2);
+
+                result += Math.Abs((function1 + function2) * h / 2);
+                current += h;
+            }
+
+            return result;
+        }
+
+        private void TrapezoidVisualization(Function function, double a, double b, uint n)
+        {
+            var model = graph.Model;
+            double h = (b - a) / n;
+            double current = a + h;
+            string x1;
+            string x2;
+            double function1;
+            double function2;
+
+            while (current <= b)
+            {
+                x1 = (current - h).ToString().Replace(",", ".");
+                x2 = current.ToString().Replace(",", ".");
+                function1 = SolveFunction(function, x1);
+                function2 = SolveFunction(function, x2);
+
+                var trapezoid = new PolygonAnnotation
+                {
+                    Fill = OxyColors.LightBlue,
+                    Points =
+                    {
+                        new DataPoint(current - h, 0),
+                        new DataPoint(current, 0),
+                        new DataPoint(current, 0),
+                        new DataPoint(current, function2),
+                        new DataPoint(current - h, function1)
+                    }
+                };
+
+                model.Annotations.Add(trapezoid);
+                current += h;
+            }
+        }
+
+        private double SimpsonMethod(Function function, double a, double b, uint n)
+        {
+            if (n % 2 != 0)
+            {
+                n += 1;
+            }
+
+            double result;
+            double evenResult = 0;
+            double oddResult = 0;
+            double h = (b - a) / n;
+            double current;
+            double currentResult;
+            string x;
+
+            for (int evenIndex = 0; evenIndex < n; evenIndex += 2)
+            {
+                current = a + evenIndex * h;
+                x = current.ToString().Replace(",", ".");
+                currentResult = SolveFunction(function, x);
+
+                evenResult += Math.Abs(currentResult);
+            }
+
+            evenResult *= 2;
+
+            for (int oddIndex = 1; oddIndex < n; oddIndex += 2)
+            {
+                current = a + oddIndex * h;
+                x = current.ToString().Replace(",", ".");
+                currentResult = SolveFunction(function, x);
+
+                oddResult += Math.Abs(currentResult);
+            }
+
+            oddResult *= 4;
+
+            result = h / 3 * (evenResult + oddResult);
+            return result;
+        }
     }
 }
