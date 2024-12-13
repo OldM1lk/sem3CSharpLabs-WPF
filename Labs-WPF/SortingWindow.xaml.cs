@@ -147,18 +147,6 @@ namespace Labs_WPF
             return Convert.ToUInt32(bogoSortIterationsTB.Text);
         }
 
-        private double[] ManualInputArray()
-        {
-            if (string.IsNullOrEmpty(manualInputTB.Text) || !Regex.IsMatch(manualInputTB.Text, @"^(-?\d+(\,\d+)?)(\s(-?\d+(\,\d+)?))*$") || manualInputTB.Text == "0")
-            {
-                MessageBox.Show("Неправильно введены элементы массива", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                manualInputTB.Text = "1 2 3 4 5 6 7 8 9 10";
-                manualInputTB.Text.Split(' ').Select(double.Parse).ToArray();
-            }
-
-            return manualInputTB.Text.Split(' ').Select(double.Parse).ToArray();
-        }
-
         private uint GenerateElementsNumber()
         {
             if (string.IsNullOrEmpty(generateElementsNumberTB.Text) || !Regex.IsMatch(generateElementsNumberTB.Text, @"^\d+$") || manualInputTB.Text == "0")
@@ -254,7 +242,7 @@ namespace Labs_WPF
 
             if (ascendingSortRB.IsChecked == true)
             {
-                for (int j = 2; j < array.Length; ++j)
+                for (int j = 1; j < array.Length; ++j)
                 {
                     double key = array[j];
                     int i = j - 1;
@@ -465,6 +453,18 @@ namespace Labs_WPF
             }
 
             return inputType;
+        }
+
+        private double[] ManualInputArray()
+        {
+            if (string.IsNullOrEmpty(manualInputTB.Text) || !Regex.IsMatch(manualInputTB.Text, @"^(-?\d+(\,\d+)?)(\s(-?\d+(\,\d+)?))*$") || manualInputTB.Text == "0")
+            {
+                MessageBox.Show("Неправильно введены элементы массива", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                manualInputTB.Text = "1 2 3 4 5 6 7 8 9 10";
+                manualInputTB.Text.Split(' ').Select(double.Parse).ToArray();
+            }
+
+            return manualInputTB.Text.Split(' ').Select(double.Parse).ToArray();
         }
 
         private double[] GenerateArray()
