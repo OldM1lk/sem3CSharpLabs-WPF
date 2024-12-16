@@ -33,7 +33,7 @@
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox x:Name="rectangleMethodCB" Content="Прямогольников" IsChecked="True"/>
-                                    <RadioButton x:Name="rectangleVisualizationCB" GroupName="Visualization" Content="Визуализировать" IsChecked="True" Margin="5,0,0,0"/>
+                                    <RadioButton x:Name="rectangleVisualizationCB" GroupName="Visualization" Content="Визуализировать" IsChecked="False" Margin="5,0,0,0"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox x:Name="trapezoidMethodCB" Content="Трапеций" IsChecked="True"/>

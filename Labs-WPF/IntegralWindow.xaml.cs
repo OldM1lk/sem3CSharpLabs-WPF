@@ -166,7 +166,7 @@ namespace Labs_WPF
         private void PlotGraph()
         {
             if (IsValuesValid())
-            {
+            {                
                 double left = LowerLimit();
                 double right = UpperLimit();
                 List<DataPoint> dot = new List<DataPoint>();
@@ -276,6 +276,7 @@ namespace Labs_WPF
                 rectangleLineSeries.Points.Add(new DataPoint(current + h, 0));
 
                 model.Series.Add(rectangleLineSeries);
+                isGraphPlotted = false;
                 this.graph.Model = model;
 
                 current += h;
@@ -347,6 +348,7 @@ namespace Labs_WPF
                 trapezoidLineSeries.Points.Add(new DataPoint(current, 0));
                                 
                 model.Series.Add(trapezoidLineSeries);
+                isGraphPlotted = false;
                 this.graph.Model = model;
 
                 current += h;
