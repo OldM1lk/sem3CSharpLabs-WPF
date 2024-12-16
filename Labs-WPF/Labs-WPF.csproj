@@ -132,6 +132,9 @@
     <Compile Include="IntegralWindow.xaml.cs">
       <DependentUpon>IntegralWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SLAEWindow.xaml.cs">
+      <DependentUpon>SLAEWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SortingWindow.xaml.cs">
       <DependentUpon>SortingWindow.xaml</DependentUpon>
     </Compile>
@@ -173,6 +176,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="NewtonWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SLAEWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

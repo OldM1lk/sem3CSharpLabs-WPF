@@ -16,7 +16,7 @@
             <Button x:Name="coordinateDescentBtn"  Content="4. Метод покоординатного спуска" FontSize="20" Margin="5, 5, 10, 5" Click="coordinateDescentBtn_Click" Initialized="coordinateDescentBtn_Initialized"/>
             <Button x:Name="sortingBtn" Content="5. Олимпиадные сортировки" FontSize="20" Margin="10, 5, 5, 5" Click="sortingBtn_Click" Initialized="sortingBtn_Initialized"/>
             <Button x:Name="integralBtn" Content="6. Интеграл" FontSize="20" Margin="5, 5, 10, 5" Click="integralBtn_Click" Initialized="integralBtn_Initialized"/>
-            <Button x:Name="btn7" Content="7" FontSize="20" Margin="10, 5, 5, 10"/>
+            <Button x:Name="slaeBtn" Content="7. СЛАУ" FontSize="20" Margin="10, 5, 5, 10" Click="slaeBtn_Click"/>
             <Button x:Name="btn8" Content="8" FontSize="20" Margin="5, 5, 10, 10"/>
         </UniformGrid>
     </Grid>

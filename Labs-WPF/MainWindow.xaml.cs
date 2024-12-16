@@ -117,5 +117,11 @@ namespace Labs_WPF
             IntegralWindow integralWindow = new IntegralWindow();
             integralWindow.Show();
         }
+
+        private void slaeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            SLAEWindow slaeWindow = new SLAEWindow();
+            slaeWindow.Show();
+        }
     }
 }
