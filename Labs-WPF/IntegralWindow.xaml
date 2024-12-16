@@ -33,15 +33,15 @@
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox x:Name="rectangleMethodCB" Content="Прямогольников" IsChecked="True"/>
-                                    <CheckBox x:Name="rectangleVisualizationCB" Content="Визуализировать" IsChecked="False" Margin="5,0,0,0"/>
+                                    <RadioButton x:Name="rectangleVisualizationCB" GroupName="Visualization" Content="Визуализировать" IsChecked="True" Margin="5,0,0,0"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox x:Name="trapezoidMethodCB" Content="Трапеций" IsChecked="True"/>
-                                    <CheckBox x:Name="trapezoidVisualizationCB" Content="Визуализировать" IsChecked="False" Margin="46,0,0,0"/>
+                                    <RadioButton x:Name="trapezoidVisualizationCB" GroupName="Visualization" Content="Визуализировать" IsChecked="False" Margin="46,0,0,0"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <CheckBox x:Name="simpsonMethodCB" Content="Симпсона" IsChecked="True"/>
-                                    <CheckBox x:Name="simpsonVisualizationCB" Content="Визуализировать" IsChecked="False" Margin="44,0,0,0" IsEnabled="False"/>
+                                    <RadioButton x:Name="simpsonVisualizationCB" GroupName="Visualization" Content="Визуализировать" IsChecked="False" Margin="44,0,0,0" IsEnabled="False"/>
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>

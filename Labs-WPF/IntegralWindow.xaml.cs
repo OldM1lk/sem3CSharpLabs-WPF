@@ -257,24 +257,27 @@ namespace Labs_WPF
             var model = graph.Model;
             double h = (b - a) / n;
             double current = a;
-            double currentResult = 0;
+            double currentResult;
             string x;
 
             while (current <= b - h)
             {
-                x = currentResult.ToString().Replace(",", ".");
+                x = current.ToString().Replace(",", ".");
                 currentResult = SolveFunction(function, x);
 
-                var rectangle = new RectangleAnnotation
+                var rectangleLineSeries = new LineSeries
                 {
-                    MinimumX = current,
-                    MaximumX = current + h,
-                    MinimumY = 0,
-                    MaximumY = currentResult,
-                    Fill = OxyColors.LightGreen
+                    Color = OxyColors.Blue
                 };
 
-                model.Annotations.Add(rectangle);
+                rectangleLineSeries.Points.Add(new DataPoint(current, 0));
+                rectangleLineSeries.Points.Add(new DataPoint(current, currentResult));
+                rectangleLineSeries.Points.Add(new DataPoint(current + h, currentResult));
+                rectangleLineSeries.Points.Add(new DataPoint(current + h, 0));
+
+                model.Series.Add(rectangleLineSeries);
+                this.graph.Model = model;
+
                 current += h;
             }
         }
@@ -333,7 +336,19 @@ namespace Labs_WPF
                     }
                 };
 
-                model.Annotations.Add(trapezoid);
+                var trapezoidLineSeries = new LineSeries
+                {
+                    Color = OxyColors.Blue
+                };
+
+                trapezoidLineSeries.Points.Add(new DataPoint(current - h, 0));
+                trapezoidLineSeries.Points.Add(new DataPoint(current - h, function1));
+                trapezoidLineSeries.Points.Add(new DataPoint(current, function2));
+                trapezoidLineSeries.Points.Add(new DataPoint(current, 0));
+                                
+                model.Series.Add(trapezoidLineSeries);
+                this.graph.Model = model;
+
                 current += h;
             }
         }
