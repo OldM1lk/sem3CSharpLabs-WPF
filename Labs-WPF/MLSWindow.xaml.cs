@@ -5,10 +5,8 @@ using System.Windows;
 using OxyPlot.Series;
 using ClosedXML.Excel;
 using Microsoft.Win32;
-using System.Collections.Generic;
 using org.mariuszgromada.math.mxparser;
 using Expression = org.mariuszgromada.math.mxparser.Expression;
-using System.Runtime.InteropServices;
 
 namespace Labs_WPF
 {
