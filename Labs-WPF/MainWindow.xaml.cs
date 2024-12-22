@@ -123,5 +123,11 @@ namespace Labs_WPF
             SLAEWindow slaeWindow = new SLAEWindow();
             slaeWindow.Show();
         }
+
+        private void mlsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MLSWindow mlsWindow = new MLSWindow();
+            mlsWindow.Show();
+        }
     }
 }

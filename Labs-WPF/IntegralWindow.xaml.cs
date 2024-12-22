@@ -237,7 +237,7 @@ namespace Labs_WPF
             double result = 0;
             double h = (b - a) / n;
             double current = a;
-            double currentResult = 0;
+            double currentResult;
             string x;
 
             while (current <= b - h)
