@@ -118,6 +118,17 @@ namespace Labs_WPF
             integralWindow.Show();
         }
 
+        private void slaeBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Решение системы линейных уравнений", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Методы:", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "1. Метод Гаусса", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "2. Метод Гаусса-Жордана", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "3. Метод Крамера", FontSize = 14 });
+        }
+
         private void slaeBtn_Click(object sender, RoutedEventArgs e)
         {
             SLAEWindow slaeWindow = new SLAEWindow();
@@ -128,6 +139,17 @@ namespace Labs_WPF
         {
             MLSWindow mlsWindow = new MLSWindow();
             mlsWindow.Show();
+        }
+
+        private void mlsBtn_Initialized(object sender, System.EventArgs e)
+        {
+            ToolTip toolTip = new ToolTip();
+            StackPanel toolTipPanel = new StackPanel();
+            toolTipPanel.Children.Add(new TextBlock { Text = "Решение системы линейных уравнений", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "Методы:", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "1. Метод Гаусса", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "2. Метод Гаусса-Жордана", FontSize = 14 });
+            toolTipPanel.Children.Add(new TextBlock { Text = "3. Метод Крамера", FontSize = 14 });
         }
     }
 }

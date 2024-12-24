@@ -393,10 +393,11 @@ namespace Labs_WPF
         {
             try
             {
+                string outputFunction = function.Replace("*", "").Replace("^2", "²");
                 double left = Convert.ToDouble(tbMinNumber.Text);
                 double right = Convert.ToDouble(tbMaxNumber.Text);
                 Function func = new Function("f(x) = " + function.Replace(",", "."));
-                var model = new PlotModel { Title = "y = " + function };
+                var model = new PlotModel { Title = "y = " + outputFunction };
 
                 if (left < 5 && left > -5)
                 {
