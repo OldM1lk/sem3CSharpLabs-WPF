@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Windows;
-using org.mariuszgromada.math.mxparser;
 using OxyPlot;
-using OxyPlot.Series;
-using Expression = org.mariuszgromada.math.mxparser.Expression;
-using System.Windows.Controls;
-using System.Text.RegularExpressions;
 using System.Linq;
-using System.Collections.Generic;
+using System.Windows;
+using OxyPlot.Series;
 using OxyPlot.Annotations;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using org.mariuszgromada.math.mxparser;
+using Expression = org.mariuszgromada.math.mxparser.Expression;
 
 namespace Labs_WPF
 {

@@ -257,6 +257,11 @@ namespace Labs_WPF
                 double[,] matrixA = new double[size, size];
                 double[] vectorB = new double[size];
 
+                if (cbCramer.IsChecked == true && size > 10)
+                {
+                    throw new Exception("Метод Крамера для матриц размерностью более 10 - ЗАПРЕЩЕН!!!");
+                }
+
                 for (int i = 0; i < size; ++i)
                 {
                     for (int j = 0; j < size; ++j)

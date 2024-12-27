@@ -135,12 +135,6 @@ namespace Labs_WPF
             slaeWindow.Show();
         }
 
-        private void mlsBtn_Click(object sender, RoutedEventArgs e)
-        {
-            MLSWindow mlsWindow = new MLSWindow();
-            mlsWindow.Show();
-        }
-
         private void mlsBtn_Initialized(object sender, System.EventArgs e)
         {
             ToolTip toolTip = new ToolTip();
@@ -150,6 +144,12 @@ namespace Labs_WPF
             toolTipPanel.Children.Add(new TextBlock { Text = "1. Метод Гаусса", FontSize = 14 });
             toolTipPanel.Children.Add(new TextBlock { Text = "2. Метод Гаусса-Жордана", FontSize = 14 });
             toolTipPanel.Children.Add(new TextBlock { Text = "3. Метод Крамера", FontSize = 14 });
+        }
+
+        private void mlsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MLSWindow mlsWindow = new MLSWindow();
+            mlsWindow.Show();
         }
     }
 }
